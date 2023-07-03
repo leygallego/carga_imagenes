@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import ImagePreview from './ImagePreview';
 import Loader from './Loader';
+import './ImageUploader.css'; // Archivo CSS para estilos personalizados
+import dragAndDropIcon from './drag-and-drop.svg';
 
 const ImageUploader = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const fileInputRef = useRef(null);
 
   const handleDrop = (event) => {
     event.preventDefault();
@@ -40,25 +43,24 @@ const ImageUploader = () => {
   
 
   const handleCopyClick = () => {
-    const imageUrl = selectedImage; // 
+    const imageUrl = selectedImage; // Suponiendo que `selectedImage` contiene la URL de la imagen
   
-    // Creo un elemento de texto temporal
     const tempInput = document.createElement('input');
     tempInput.value = imageUrl;
     document.body.appendChild(tempInput);
   
-    // Selecciono y copiar el contenido del elemento de texto
     tempInput.select();
     document.execCommand('copy');
   
-    // Elimino el elemento de texto temporal
     document.body.removeChild(tempInput);
   };
   
 
   return (
-    <div>
-      <h1>Image Uploader</h1>
+    <div className="container">
+        <div className="card">
+      <h1 className='title' >Image Uploader</h1>
+      <img src={dragAndDropIcon} alt="Drag and Drop" className="drag-and-drop-icon" />
       <div
         className="drop-zone"
         onDrop={handleDrop}
@@ -71,20 +73,26 @@ const ImageUploader = () => {
             {selectedImage ? (
               <>
                 <ImagePreview image={selectedImage} />
-                <button onClick={handleCopyClick}>Copy URL</button>
+                <button className="custom-button" onClick={handleCopyClick}>Copy URL</button>
               </>
             ) : (
               <>
-                <p>Drag and drop an image or select from your folder</p>
+                <p className='text' >Selecciona una imagen de tu carpeta</p>
                 <input
+                  ref={fileInputRef}
                   type="file"
                   accept="image/*"
                   onChange={handleFileInputChange}
+                  className="hidden-input"
                 />
+                <button className="custom-button" onClick={() => fileInputRef.current.click()}>
+                  Seleccionar Archivo
+                </button>
               </>
             )}
           </>
         )}
+      </div>
       </div>
     </div>
   );
