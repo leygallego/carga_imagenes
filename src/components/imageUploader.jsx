@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import ImagePreview from './ImagePreview';
 import Loader from './Loader';
 import './ImageUploader.css'; // Archivo CSS para estilos personalizados
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import dragAndDropIcon from './drag-and-drop.svg';
 
 const ImageUploader = () => {
@@ -57,6 +59,13 @@ const ImageUploader = () => {
     document.body.removeChild(tempInput);
   };
 
+  const handleResetClick = () => {
+    setSelectedImage(null);
+    setIsLoading(false);
+    setIsImageLoaded(false);
+  };
+  
+
 
   return (
     <div className="container">
@@ -77,8 +86,10 @@ const ImageUploader = () => {
                       <div className="image-container">
                         <ImagePreview image={selectedImage} />
                       </div>
+                      <FontAwesomeIcon icon={faCheck} className="check-icon" />
                       <p>Foto cargada correctamente</p>
                       <button className="custom-button" onClick={handleCopyClick}>Copy URL</button>
+                      <button className="custom-button" onClick={handleResetClick}>Reset</button>
                     </div>
                   ) : (
                 <>
